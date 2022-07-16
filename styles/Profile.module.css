@@ -1,0 +1,25 @@
+.container {
+  color: #fff;
+}
+
+.main {
+  min-height: 100vh;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.topCard {
+  min-height: 20vh;
+  min-width: 100%;
+  align-items: center;
+  place-content: center;
+}
+
+@media (max-width: 600px) {
+  .grid {
+    width: 100%;
+    flex-direction: column;
+  }
+}
