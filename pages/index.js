@@ -89,17 +89,17 @@ export default function Home() {
       </div>
       <main className={`${styles.main}`}>
         <h1 className="font-bold text-5xl text-white">
-          Your Spotify TOP 10
+          Your Spotify Top 10
         </h1>
 
         <p className="py-10 text-base px-5 text-white">
-          Lorem Ipsum is simply dummy text of the printing and typesetting industry.
+          Get your spotify profiles, top 10 lists, and mores.
         </p>
 
-        <button className='px-10 py-4 bg-spotify rounded-full font-semibold hover:shadow-cyan-500/50 shadow-xl hover:brightness-110'
+        <button className='px-10 py-4 bg-spotify rounded-full font-semibold hover:shadow-cyan-500/50 shadow-xl hover:brightness-110 flex'
           onClick={(event) => handleLogin(event)}>
-          <img src=""></img>
-          Log in with Spotify
+          <img src="/ic-spotify-30.png"></img>
+          <div className="px-3">Log in with Spotify</div>
         </button>
       </main>
 

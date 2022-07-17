@@ -12,8 +12,6 @@ import { getProfile } from '../api/profile'
 import { getTopItems } from '../api/topItems'
 import TopGenre from '../components/TopGenre'
 
-import { topArtist } from '../datas/topArtists'
-import { topSong } from '../datas/topSongs'
 import { getGenreFromArtists } from '../libs/dataHelper'
 import { TIME_RANGE } from '../libs/constants'
 
@@ -112,7 +110,7 @@ export default function Profile() {
             selectedValue={topArtistRange}
             onChangeTime={handleTimeArtists}
           />
-          <div className='pb-10 px-5 pt-5'>
+          <div className='pb-10 pt-5 px-5'>
             {/* table */}
             <TopList 
               items={ topArtists[topArtistRange] ? topArtists[topArtistRange].filter((el, idx) => idx > 0) : []}

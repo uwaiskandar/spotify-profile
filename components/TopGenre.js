@@ -30,10 +30,10 @@ class TopGenre extends React.Component {
           <div className={`text-4xl font-bold ${textOrientation}`}>
             Top<br/>Genres.
           </div>
-          <div className='pb-5 pt-7 px-4 grid grid-cols-3 lg:grid-cols-5 gap-2'>
+          <div className='pb-5 pt-7 px-4 grid grid-cols-2 lg:grid-cols-3 gap-2'>
             {
               genres.map((item, idx) => {
-                return <div key={idx} className='font-semibold text-xs lg:text-sm text-left hover:text-cyan-300'>
+                return <div key={idx} className='font-semibold text-sm lg:text-sm text-left bg-black/50 px-5 py-5 rounded-xl'>
                   #{item}
                 </div>
               })
