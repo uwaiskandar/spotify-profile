@@ -11,10 +11,10 @@
 }
 
 .topCard {
-  min-height: 20vh;
-  min-width: 100%;
-  align-items: center;
-  place-content: center;
+  /* min-height: 20vh; */
+  /* min-width: 100%; */
+  /* align-items: center;
+  place-content: center; */
 }
 
 @media (max-width: 600px) {

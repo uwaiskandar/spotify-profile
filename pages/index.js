@@ -1,64 +1,54 @@
 import Head from 'next/head'
 import Image from 'next/image'
-import { useState, useEffect, useRef } from 'react'
-// import { useSelector, useDispatch } from 'react-redux'
+import React, { useState, useEffect } from 'react'
 
 import styles from '../styles/Home.module.css'
-// import { authLogin } from '../redux/auth'
-import { authLogin } from '../api/auth'
 import { getRedirectUrl, userScopes } from '../api/auth'
+import { getHash } from '../libs/getHash'
+import { useInterval } from '../libs/interval'
 
-function useInterval(callback, delay) {
-  const savedCallback = useRef();
-
-  // Remember the latest callback.
-  useEffect(() => {
-    savedCallback.current = callback;
-  }, [callback]);
-
-  // Set up the interval.
-  useEffect(() => {
-    function tick() {
-      savedCallback.current();
-    }
-    if (delay !== null) {
-      let id = setInterval(tick, delay);
-      return () => clearInterval(id);
-    }
-  }, [delay]);
-}
+const BANNER_IMAGE = [
+  '/bg/banner-music-1.jpg',
+  '/bg/banner-music-2.jpg',
+  '/bg/banner-music-3.jpg',
+  '/bg/banner-music-4.jpg',
+  '/bg/banner-music-5.jpg',
+  '/bg/banner-music-5.jpg',
+]
 
 export default function Home() {
-  // const dispatch = useDispatch()
-  let bannerImage = [
-    '/bg/banner-music-1.jpg',
-    '/bg/banner-music-2.jpg',
-    '/bg/banner-music-3.jpg',
-    '/bg/banner-music-4.jpg',
-    '/bg/banner-music-5.jpg',
-    '/bg/banner-music-5.jpg',
-  ]
+
   let [currentBanner, setBanner] = useState({
-    value: bannerImage[0],
+    value: BANNER_IMAGE[0],
   })
   let [count = 1, setCount] = useState(null)
 
   useInterval(() => {
-    setBanner(bannerImage[count] ?? bannerImage[0])
+    setBanner(BANNER_IMAGE[count] ?? BANNER_IMAGE[0])
     setCount(count+1)
-    if (count === bannerImage.length) {
+    if (count === BANNER_IMAGE.length) {
       setCount(0)
     }
     console.log('currentBanner', currentBanner)
   }, 4000);
 
+  useEffect(() => {
+    let accessToken = getHash().access_token
+    if (accessToken) {
+      window.localStorage.setItem('spotifyAuthToken', accessToken)
+      window.opener?.postMessage({ type: 'react-spotify-auth', accessToken }, '*')
+    }
+    let { spotifyAuthToken } = window.localStorage
+    if(spotifyAuthToken) {
+      window.location = '/profile'
+    }
+  })
+
   const handleLogin = (event) => {
     let clientID = process.env.NEXT_PUBLIC_SPOTIFY_CLIENTID ?? ''
     let redirectUrl = process.env.NEXT_PUBLIC_URL ?? 'http://localhost:3000'
-    // dispatch(authLogin())
     event.preventDefault()
 
-    console.log('clientID', clientID)
     const redirectUri = getRedirectUrl(
       {
         clientID,
@@ -75,13 +65,11 @@ export default function Home() {
         }
 
         loginWindow.close()
-        this.props.onAccessToken(event.data.accessToken)
       }, false)
     } else {
       window.location = redirectUri
     }
   }
-
 
   return (
     // login to spotify
@@ -113,36 +101,6 @@ export default function Home() {
           <img src=""></img>
           Log in with Spotify
         </button>
-
-        {/* <div className={styles.grid}>
-          <a href="https://nextjs.org/docs" className={styles.card}>
-            <h2>Documentation &rarr;</h2>
-            <p>Find in-depth information about Next.js features and API.</p>
-          </a>
-
-          <a href="https://nextjs.org/learn" className={styles.card}>
-            <h2>Learn &rarr;</h2>
-            <p>Learn about Next.js in an interactive course with quizzes!</p>
-          </a>
-
-          <a
-            href="https://github.com/vercel/next.js/tree/canary/examples"
-            className={styles.card}
-          >
-            <h2>Examples &rarr;</h2>
-            <p>Discover and deploy boilerplate example Next.js projects.</p>
-          </a>
-
-          <a
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-            className={styles.card}
-          >
-            <h2>Deploy &rarr;</h2>
-            <p>
-              Instantly deploy your Next.js site to a public URL with Vercel.
-            </p>
-          </a>
-        </div> */}
       </main>
 
       <footer className={styles.footer}>

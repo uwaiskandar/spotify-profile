@@ -11,4 +11,10 @@ export const getRedirectUrl = ({ clientID, scopes, redirectUrl }) => {
 export const userScopes = [
   'user-read-private',
   'user-read-email',
+  'user-top-read'
 ]
+
+export function logout() {
+  window.localStorage.removeItem('spotifyAuthToken')
+  window.location = '/'
+}
