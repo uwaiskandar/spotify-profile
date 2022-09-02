@@ -28,8 +28,7 @@ export default function Profile() {
     // get profile
     const profileData = await getProfile()
     setProfile(profileData)
-
-    // get all time rang
+    // get all time range
     let data = {
       songs: [],
       artists: [],

@@ -6,6 +6,7 @@ import styles from '../styles/Home.module.css'
 import { getRedirectUrl, userScopes } from '../api/auth'
 import { getHash } from '../libs/getHash'
 import { useInterval } from '../libs/interval'
+import { handleLogin } from '../api/auth'
 
 const BANNER_IMAGE = [
   '/bg/banner-music-1.jpg',
@@ -21,16 +22,15 @@ export default function Home() {
   let [currentBanner, setBanner] = useState({
     value: BANNER_IMAGE[0],
   })
-  let [count = 1, setCount] = useState(null)
+  // let [count = 1, setCount] = useState(null)
 
-  useInterval(() => {
-    setBanner(BANNER_IMAGE[count] ?? BANNER_IMAGE[0])
-    setCount(count+1)
-    if (count === BANNER_IMAGE.length) {
-      setCount(0)
-    }
-    console.log('currentBanner', currentBanner)
-  }, 4000);
+  // useInterval(() => {
+    // setBanner(BANNER_IMAGE[count] ?? BANNER_IMAGE[0])
+    // setCount(count+1)
+    // if (count === BANNER_IMAGE.length) {
+    //   setCount(0)
+    // }
+  // }, 4000);
 
   useEffect(() => {
     let accessToken = getHash().access_token
@@ -42,34 +42,9 @@ export default function Home() {
     if(spotifyAuthToken) {
       window.location = '/profile'
     }
+    const rand = Math.round(Math.random() * 5);
+    setBanner(BANNER_IMAGE[rand] ?? BANNER_IMAGE[0])
   })
-
-  const handleLogin = (event) => {
-    let clientID = process.env.NEXT_PUBLIC_SPOTIFY_CLIENTID ?? ''
-    let redirectUrl = process.env.NEXT_PUBLIC_URL ?? 'http://localhost:3000'
-    event.preventDefault()
-
-    const redirectUri = getRedirectUrl(
-      {
-        clientID,
-        scopes: userScopes,
-        redirectUrl,
-      }
-    )
-
-    if (window.location !== window.parent.location) {
-      const loginWindow = window.open(redirectUri)
-      window.addEventListener('message', (event) => {
-        if (event.data.type !== 'react-spotify-auth' || !event.data.accessToken) {
-          return
-        }
-
-        loginWindow.close()
-      }, false)
-    } else {
-      window.location = redirectUri
-    }
-  }
 
   return (
     // login to spotify

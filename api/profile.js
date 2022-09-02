@@ -1,5 +1,5 @@
 import Axios from 'axios'
-import { tokenExpiredHandler } from '../libs/tokenExpiredHandler'
+import { spotifyErrorHandler } from '../libs/errorHandler'
 
 const SPOTIFY_API = process.env.NEXT_PUBLIC_SPOTIFY_API
 
@@ -15,7 +15,7 @@ export async function getProfile() {
     return res.data
   })
   .catch(err => {
-    console.log(err)
+    spotifyErrorHandler(err)
     // tokenExpiredHandler()
   })
 }

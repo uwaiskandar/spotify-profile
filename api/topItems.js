@@ -1,5 +1,5 @@
 import Axios from 'axios'
-import { tokenExpiredHandler } from '../libs/tokenExpiredHandler'
+import { spotifyErrorHandler } from '../libs/errorHandler'
 
 const SPOTIFY_API = process.env.NEXT_PUBLIC_SPOTIFY_API
 
@@ -19,8 +19,7 @@ export async function getTopItems({ type = 'artists', timeRange = '', limit = 10
       return res.data
     })
     .catch(err => {
-      console.log(err)
-      // tokenExpiredHandler()
+      spotifyErrorHandler(err)
     })
   return topItems
 }
